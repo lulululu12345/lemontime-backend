@@ -1,4 +1,5 @@
 require('dotenv').config()
+const { response } = require('express')
 const express = require('express')
 const app = express()
 const Task = require('./models/task')
@@ -33,13 +34,19 @@ app.get('/api/tasks', (req, res) => {
     res.json(tasks)
   })
 })
-// Get  a single task object
-app.get('/api/tasks/:id', (req, res) => {
-  Task.findById(req.params.id).then(task => {
-    res.json(task)
-  })
+// Get a single task object
+app.get('/api/tasks/:id', (req, res, next) => {
+  Task.findById(req.params.id)
+    .then(task => {
+      if (note) {
+        res.json(task)
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
-
+// Create a new task
 app.post('/api/tasks', (req, res) => {
   const body = req.body
 
@@ -58,6 +65,51 @@ app.post('/api/tasks', (req, res) => {
     res.json(savedNote)
   })
 })
+// Delete a task
+app.delete('api/tasks/:id', (req, res, next) => {
+  Note.findByIdAndRemove(req.params.id)
+    .then(result => {
+      res.statuus(204).end()
+    })
+    .catch(error => next(error))
+})
+
+// Update/edit a task
+app.put('/api/notes/:id', (req, res, next) => {
+  const body = req.body
+  
+  const note = {
+    name: body.name,
+    dur: body.dur,
+    note: body.note,
+    blocksCompleted: body.blocksCompleted
+  }
+
+  Task.findByIdAndUpdate(req.params.id, task, { new: true })
+    .then(updateNote => {
+      res.json(updateNote)
+    })
+    .catch(error => next(error))
+})
+
+// If the given endpoint is not found, respond with an error message
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+// If an error occurs:
+const errorHandler = (error, req, res, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+
+  next(error)
+}
+
+app.use(errorHandler)
 
 
 const PORT = process.env.PORT
