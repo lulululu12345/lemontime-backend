@@ -29,24 +29,34 @@ app.get('/', (req, res) => {
 })
 // Get the entire tasks array
 app.get('/api/tasks', (req, res) => {
-  res.json(tasks)
+  Task.find({}).then(tasks => {
+    res.json(tasks)
+  })
 })
 // Get  a single task object
 app.get('/api/tasks/:id', (req, res) => {
-  const reqId = Number(req.params.id)
-
-  const task = tasks.find(task => task.id === reqId)
-
-  res.json(task)
+  Task.findById(req.params.id).then(task => {
+    res.json(task)
+  })
 })
 
-app.post('/api/tasks/', (req, res) => {
-  const body = [req.body]
+app.post('/api/tasks', (req, res) => {
+  const body = req.body
 
-  const newTasks = tasks.concat(body)
-  
-  console.log(tasks);
-  res.send(tasks)
+  if (body.name === undefined) {
+    return res.status(400).json({error: 'content missing'})
+  }
+
+  const task = new Task({
+    name: body.name,
+    dur: body.dur,
+    note: body.note,
+    blocksCompleted: body.blocksCompleted
+  })
+
+  task.save().then(savedNote => {
+    res.json(savedNote)
+  })
 })
 
 

@@ -1,10 +1,9 @@
 post http://localhost:3001/api/tasks
-content-type: application/json
+Content-Type: application/json
 
 {
-  "id": 2,
-  "name": "Clear out the guttersnipes",
+  "name": "A task to complete",
   "dur": 2,
-  "blocksCompleted": 0,
-  "note": "Daily, if you please"
+  "note": "A note for the task",
+  "blocksCompleted": 0
 }
