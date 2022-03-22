@@ -1,0 +1,9 @@
+put http://localhost:3001/api/tasks/62389b4ca3d75cdfe64b2d0e
+Content-Type: application/json
+
+{
+  "name": "A task which may or may not be completed",
+  "dur": 8,
+  "note": "A new, stronger note for what ails you",
+  "blocksCompleted": 0
+}

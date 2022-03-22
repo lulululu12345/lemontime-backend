@@ -2,9 +2,11 @@ require('dotenv').config()
 const { response } = require('express')
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const Task = require('./models/task')
 
 app.use(express.json())
+app.use(cors())
 
 // Phony database
 const tasks = [
@@ -75,10 +77,11 @@ app.delete('api/tasks/:id', (req, res, next) => {
 })
 
 // Update/edit a task
-app.put('/api/notes/:id', (req, res, next) => {
+app.put('/api/tasks/:id', (req, res, next) => {
   const body = req.body
+  console.log(body)
   
-  const note = {
+  const task = {
     name: body.name,
     dur: body.dur,
     note: body.note,
@@ -86,8 +89,8 @@ app.put('/api/notes/:id', (req, res, next) => {
   }
 
   Task.findByIdAndUpdate(req.params.id, task, { new: true })
-    .then(updateNote => {
-      res.json(updateNote)
+    .then(updateTask => {
+      res.json(updateTask)
     })
     .catch(error => next(error))
 })
