@@ -25,17 +25,20 @@ const tasks = [
     note: 'Get em out'
   }
 ]
+
 // Get the homepage
 app.get('/', (req, res) => {
   console.log(req)
   res.send('Hello World!')
 })
+
 // Get the entire tasks array
 app.get('/api/tasks', (req, res) => {
   Task.find({}).then(tasks => {
     res.json(tasks)
   })
 })
+
 // Get a single task object
 app.get('/api/tasks/:id', (req, res, next) => {
   Task.findById(req.params.id)
@@ -67,11 +70,12 @@ app.post('/api/tasks', (req, res) => {
     res.json(savedNote)
   })
 })
+
 // Delete a task
-app.delete('api/tasks/:id', (req, res, next) => {
-  Note.findByIdAndRemove(req.params.id)
+app.delete('/api/tasks/:id', (req, res, next) => {
+  Task.findByIdAndRemove(req.params.id)
     .then(result => {
-      res.statuus(204).end()
+      res.status(204).end()
     })
     .catch(error => next(error))
 })
@@ -79,7 +83,6 @@ app.delete('api/tasks/:id', (req, res, next) => {
 // Update/edit a task
 app.put('/api/tasks/:id', (req, res, next) => {
   const body = req.body
-  console.log(body)
   
   const task = {
     name: body.name,
