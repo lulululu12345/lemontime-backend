@@ -2,7 +2,7 @@ post http://localhost:3001/api/tasks
 Content-Type: application/json
 
 {
-  "name": "A task",
+  "name": "skliuygfd",
   "dur": 1,
   "note": "When the work has just begun, never stop until it's done. Be the labour great or small, do it well or not at all.",
   "blocksCompleted": 0

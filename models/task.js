@@ -4,7 +4,11 @@ const taskSchema = new mongoose.Schema({
   name: String,
   dur: Number,
   note: String,
-  blocksCompleted: Number
+  blocksCompleted: Number,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
 })
 
 taskSchema.set('toJSON', {

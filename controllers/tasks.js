@@ -1,5 +1,4 @@
 const tasksRouter = require('express').Router()
-const task = require('../models/task')
 const Task = require('../models/task')
 
 // Get the entire tasks array
@@ -13,7 +12,7 @@ tasksRouter.get('/', (req, res) => {
 tasksRouter.get('/:id', (req, res, next) => {
   Task.findById(req.params.id)
     .then(task => {
-      if (note) {
+      if (task) {
         res.json(task)
       } else {
         res.status(404).end()
