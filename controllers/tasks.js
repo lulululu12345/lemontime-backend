@@ -1,6 +1,8 @@
 const tasksRouter = require('express').Router()
 const Task = require('../models/task')
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
+const usersRouter = require('./users')
 
 // Get the entire tasks array
 tasksRouter.get('/', async (req, res) => {
@@ -20,11 +22,24 @@ tasksRouter.get('/:id', (req, res, next) => {
     })
     .catch(error => next(error))
 })
+
+const getTokenFrom = req => {
+  const authorization = req.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  return null
+}
+
 // Create a new task
 tasksRouter.post('/', async (req, res, next) => {
   const body = req.body
-
-  const user = await User.findById(body.userId)
+  const token = getTokenFrom(req)
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  if (!decodedToken.id) {
+    return res.status.json({ error: 'token missing or invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
 
   const task = new Task({
     name: body.name,

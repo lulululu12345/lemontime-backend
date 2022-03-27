@@ -1,10 +1,11 @@
 post http://localhost:3001/api/tasks
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaXMgaXMgYW4gZW1haWwiLCJpZCI6IjYyM2Y4M2U5YmY1ZDNjZmEyMzBkYjI0MyIsImlhdCI6MTY0ODM4OTcxNH0.H5ckPkhAiQd1IQMisnQhrZcQSCxRcKqjf-ey82TBAsI
 
 {
-  "name": "Another task for the user",
+  "name": "Tiskit-a-Task-it",
   "dur": 4,
-  "note": "Just a note for the user's other task",
+  "note": "hullabulloo",
   "blocksCompleted": 0,
   "userId": "623f83e9bf5d3cfa230db243"
 }
