@@ -2,8 +2,9 @@ post http://localhost:3001/api/tasks
 Content-Type: application/json
 
 {
-  "name": "skliuygfd",
-  "dur": 1,
-  "note": "When the work has just begun, never stop until it's done. Be the labour great or small, do it well or not at all.",
-  "blocksCompleted": 0
+  "name": "Another task for the user",
+  "dur": 4,
+  "note": "Just a note for the user's other task",
+  "blocksCompleted": 0,
+  "userId": "623f83e9bf5d3cfa230db243"
 }

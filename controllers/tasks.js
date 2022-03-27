@@ -1,11 +1,11 @@
 const tasksRouter = require('express').Router()
 const Task = require('../models/task')
+const User = require('../models/user')
 
 // Get the entire tasks array
-tasksRouter.get('/', (req, res) => {
-  Task.find({}).then(tasks => {
-    res.json(tasks)
-  })
+tasksRouter.get('/', async (req, res) => {
+  const tasks = await Task.find({}).populate('user', { email: 1 })
+  res.json(tasks)
 })
 
 // Get a single task object
@@ -21,23 +21,24 @@ tasksRouter.get('/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 // Create a new task
-tasksRouter.post('/', (req, res) => {
+tasksRouter.post('/', async (req, res, next) => {
   const body = req.body
 
-  if (body.name === undefined) {
-    return res.status(400).json({error: 'content missing'})
-  }
+  const user = await User.findById(body.userId)
 
   const task = new Task({
     name: body.name,
     dur: body.dur,
     note: body.note,
-    blocksCompleted: body.blocksCompleted
+    blocksCompleted: body.blocksCompleted,
+    user: user._id
   })
 
-  task.save().then(savedNote => {
-    res.json(savedNote)
-  })
+  const savedTask = await task.save()
+  user.tasks = user.tasks.concat(savedTask._id)
+  await user.save()
+
+  res.json(savedTask)
 })
 
 // Delete a task
