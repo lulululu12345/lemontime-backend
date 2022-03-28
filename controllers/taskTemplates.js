@@ -3,6 +3,11 @@ const TaskTemplate = require('../models/taskTemplate')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
+taskTemplatesRouter.get('/', async (req, res) => {
+  const taskTemplates = await TaskTemplate.find({}).populate('user', { email: 1 })
+  res.json(taskTemplates)
+})
+
 const getTokenFrom = req => {
   const authorization = req.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
@@ -19,7 +24,6 @@ taskTemplatesRouter.post('/', async (req, res) => {
     return res.status.json({ error: 'token missing or invalid' })
   }
   const user = await User.findById(decodedToken.id)
-  console.log(body);
 
   const taskTemplate = new TaskTemplate({
     name: body.name,
