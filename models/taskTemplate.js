@@ -1,17 +1,19 @@
 const mongoose = require('mongoose')
 
+const taskSchema = new mongoose.Schema({
+  name: String,
+  dur: Number,
+  note: String,
+  blocksCompleted: Number,
+})
+
 const taskTemplateSchema = new mongoose.Schema({
   name: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  tasks: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Task'
-    }
-  ]
+  tasks: [taskSchema]
 })
 
 taskTemplateSchema.set('toJSON', {

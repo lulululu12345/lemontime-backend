@@ -19,10 +19,12 @@ taskTemplatesRouter.post('/', async (req, res) => {
     return res.status.json({ error: 'token missing or invalid' })
   }
   const user = await User.findById(decodedToken.id)
+  console.log(body);
 
   const taskTemplate = new TaskTemplate({
     name: body.name,
-    user: user._id
+    user: user._id,
+    tasks: body.tasks
   })
 
   const savedTaskTemplate = await taskTemplate.save()

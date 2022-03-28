@@ -39,6 +39,7 @@ tasksRouter.post('/', async (req, res, next) => {
   if (!decodedToken.id) {
     return res.status.json({ error: 'token missing or invalid' })
   }
+  // const user = await User.findById(decodedToken.id)
   const user = await User.findById(decodedToken.id)
 
   const task = new Task({

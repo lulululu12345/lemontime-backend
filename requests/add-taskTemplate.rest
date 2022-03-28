@@ -3,6 +3,17 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaXMgaXMgYW4gZW1haWwiLCJpZCI6IjYyM2Y4M2U5YmY1ZDNjZmEyMzBkYjI0MyIsImlhdCI6MTY0ODM4OTcxNH0.H5ckPkhAiQd1IQMisnQhrZcQSCxRcKqjf-ey82TBAsI
 
 {
-  "name": "taskTempOne",
-  "userId": "623f83e9bf5d3cfa230db243"
+  "name": "taskTemp with embedded tasks",
+  "userId": "623f83e9bf5d3cfa230db243",
+  "tasks": [{
+    "name": "some god forsaken task",
+    "dur": 3,
+    "note": "oh fuck",
+    "blocksCompleted": 1
+  }, {
+    "name": "another task",
+    "dur": 2,
+    "note": "slap me in the nipple",
+    "blocksCompleted": 0
+  }]
 }
