@@ -5,7 +5,7 @@ const User = require('../models/user')
 usersRouter.get('/', async (req, res) => {
   const users = await User
     .find({})
-    .populate('tasks', { name: 1, dur: 1, note: 1, blocksCompleted: 1 })
+    .populate('taskTemplates', { name: 1 })
   res.json(users)
 })
 
@@ -15,7 +15,7 @@ usersRouter.post('/', async (req, res) => {
   const existingUser = await User.findOne({ email })
   if (existingUser) {
     return res.status(400).json({
-      error: 'username must be unique'
+      error: 'email already in use'
     })
   }
 

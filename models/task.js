@@ -5,9 +5,9 @@ const taskSchema = new mongoose.Schema({
   dur: Number,
   note: String,
   blocksCompleted: Number,
-  user: {
+  taskTemplate: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'TaskTemplate'
   }
 })
 

@@ -2,9 +2,13 @@ const mongoose = require('mongoose')
 
 const taskTemplateSchema = new mongoose.Schema({
   name: String,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   tasks: [
     {
-      type: mongoose.Schema.type.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Task'
     }
   ]
