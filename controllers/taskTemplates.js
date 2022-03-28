@@ -21,7 +21,7 @@ taskTemplatesRouter.post('/', async (req, res) => {
   const token = getTokenFrom(req)
   const decodedToken = jwt.verify(token, process.env.SECRET)
   if (!decodedToken.id) {
-    return res.status.json({ error: 'token missing or invalid' })
+    return res.status(401).json({ error: 'token missing or invalid' })
   }
   const user = await User.findById(decodedToken.id)
 

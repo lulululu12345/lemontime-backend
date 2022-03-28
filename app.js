@@ -26,7 +26,7 @@ app.use(middleware.requestLogger)
 
 app.use('/api/login', loginRouter)
 app.use('/api/users', usersRouter)
-app.use('/api/taskTemplates', taskTemplatesRouter)
+app.use('/api/tasktemplates', taskTemplatesRouter)
 app.use('/api/tasks', tasksRouter)
 
 app.use(middleware.unknownEndpoint)
