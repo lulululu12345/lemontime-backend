@@ -4,7 +4,9 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
 taskTemplatesRouter.get('/', async (req, res) => {
-  const taskTemplates = await TaskTemplate.find({}).populate('user', { email: 1 })
+  const taskTemplates = await TaskTemplate
+    .find({})
+    .populate('user', { email: 1 })
   res.json(taskTemplates)
 })
 
