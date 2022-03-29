@@ -40,4 +40,12 @@ taskTemplatesRouter.post('/', async (req, res) => {
   res.json(savedTaskTemplate)
 })
 
+taskTemplatesRouter.delete('/:id', (req, res, next) => {
+  TaskTemplate.findByIdAndRemove(req.params.id)
+    .then(result => {
+      res.status(204).end()
+    })
+    .catch(error => next(error))
+})
+
 module.exports = taskTemplatesRouter
