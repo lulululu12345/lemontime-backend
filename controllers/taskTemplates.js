@@ -13,7 +13,6 @@ const getTokenFrom = req => {
 
 taskTemplatesRouter.get('/', async (req, res) => {
   const token = getTokenFrom(req)
-  console.log('token', token)
   const decodedToken = jwt.verify(token, process.env.SECRET)
   if (!decodedToken.id) {
     return res.status(401).json({ error: 'token missing or invalid' })
@@ -45,12 +44,31 @@ taskTemplatesRouter.post('/', async (req, res) => {
   res.json(savedTaskTemplate)
 })
 
-taskTemplatesRouter.delete('/:id', (req, res, next) => {
-  TaskTemplate.findByIdAndRemove(req.params.id)
-    .then(result => {
-      res.status(204).end()
-    })
-    .catch(error => next(error))
+taskTemplatesRouter.delete('/:id', async (req, res, next) => {
+  const token = getTokenFrom(req)
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  if (!decodedToken.id) {
+    return res.status(401).json({ error: 'token missing or invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
+
+  const userTemplates = user.taskTemplates
+
+  const userTemplateStrings = userTemplates.map(template => {
+    return template.toString()
+  })
+
+  const filteredTemplates = userTemplateStrings.filter(templateId => {
+    return templateId !== req.params.id
+  })
+
+  user.taskTemplates = filteredTemplates
+  await user.save()
+
+  await TaskTemplate.findByIdAndRemove(req.params.id)
+  res.status(204).end()
+
+  // .catch(error => next(error))
 })
 
 module.exports = taskTemplatesRouter

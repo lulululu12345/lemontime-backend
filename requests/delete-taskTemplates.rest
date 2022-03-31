@@ -1,0 +1,3 @@
+delete http://localhost:3001/api/tasktemplates/6244b610402dc8014c623a7d
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imh1bHUiLCJpZCI6IjYyNDRhNzQxNWY2MDQ0NDljZTQwZTIxZCIsImlhdCI6MTY0ODY2NjU5M30.1IkzGgMIV9NqPTuGdCTggFODEg9UlAoaoh1QhI0HBz8
