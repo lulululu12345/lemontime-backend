@@ -1,0 +1,3 @@
+# No longer works, token used to access id rather than sending in the req params
+delete http://localhost:3001/api/users/6256c4c6f96a059af40bdca8
+Content-Type: application/json

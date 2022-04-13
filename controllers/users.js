@@ -40,4 +40,26 @@ usersRouter.post('/', async (req, res) => {
   res.status(200).send({ token, email: user.email })
 })
 
+const getTokenFrom = req => {
+  const authorization = req.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  return null
+}
+
+usersRouter.delete('/', async (req, res, next) => {
+  try {
+    const token = getTokenFrom(req)
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    if (!decodedToken.id) {
+      return res.status(401).json({ error: 'token missing or invalid' })
+    }
+    await User.findByIdAndRemove(decodedToken.id)
+    res.status(204).end()
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = usersRouter
