@@ -8,7 +8,16 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'TaskTemplate'
     }
-  ]
+  ],
+  status: {
+    type: String,
+    enum: ['Pending', 'Active'],
+    default: 'Pending'
+  },
+  confirmationCode: {
+    type: String,
+    unique: true 
+  }
 })
 
 userSchema.set('toJSON', {

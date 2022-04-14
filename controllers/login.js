@@ -18,6 +18,12 @@ loginRouter.post('/', async (req, res) => {
     })
   }
 
+  if (user.status !== 'Active') {
+    return res.status(401).send({
+      message: 'Please Verify Your Email!',
+    })
+  }
+
   const userForToken = {
     email: user.email,
     id: user._id,

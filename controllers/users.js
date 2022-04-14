@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
+const sendConfirmationEmail = require ('../utils/nodemailer.config.js')
 
 usersRouter.get('/', async (req, res) => {
   const users = await User
@@ -10,35 +11,94 @@ usersRouter.get('/', async (req, res) => {
   res.json(users)
 })
 
-usersRouter.post('/', async (req, res) => {
-  const { email, password } = req.body
 
+
+
+
+// Route for user sign-up
+usersRouter.post('/', async (req, res) => {
+  // Get the email and password from the request body.
+  const { email, password } = req.body
+  // Check to see if the email supplied is already stored in the database. If so, return an error message.
   const existingUser = await User.findOne({ email })
   if (existingUser) {
     return res.status(400).json({
       error: 'email already in use'
     })
   }
-
-  const saltRounds = 10
-  const passwordHash = await bcrypt.hash(password, saltRounds)
-
-  const user = new User({
-    email,
-    passwordHash,
-  })
-
-  const savedUser = await user.save()
-
+  // Create a user object to pass to the json sign method (to generate a json web token).
   const userForToken = {
     email: savedUser.email,
     id: savedUser.id,
   }
+  // Generate a password hash to be stored in the database.
+  const saltRounds = 10
+  const passwordHash = await bcrypt.hash(password, saltRounds)
+  // Generate a json web token to be used as a confirmationCode in the verification email.
+  const confirmationCode = jwt.sign(userForToken, process.env.SECRET)
+  // Create the user object to store in the database. Including the confirmation code for the verification email.
+  const user = new User({
+    email,
+    passwordHash,
+    confirmationCode
+  })
+  // Save the user in the database.
+  // const savedUser = await user.save()
 
-  const token = jwt.sign(userForToken, process.env.SECRET)
+  const savedUser = await user.save((err) => {
+    if (err) return res.status(500).send({ message: err })
+  })
 
-  res.status(200).send({ token, email: user.email })
+  res.send({ message: 'An account verification link has been sent to your email!' })
+  
+  sendConfirmationEmail(
+    user.email,
+    user.confirmationCode
+  )
+
+  // res.status(200).send({ token, email: user.email })
 })
+
+
+// Probbly need to take another look at all this and figure out a better way to do the same thing
+// verifyUser = (req, res, next) => {
+//   User.findOne({
+//     confirmationCode: req.params.confirmationCode,
+//   }).then((user) => {
+//     if (!user) {
+//       return res.status(404).send({ message: 'User not found.'})
+//     }
+
+//     user.status = 'Active'
+//     user.save((err) => {
+//       if (err) {
+//         return res.status(500).send({ message: err })
+//       }
+//     })
+//   }).catch((e) => console.log('error', e))
+// }
+usersRouter.get('/confirm/:confirmationCode', (req, res, next) => {
+  User.findOne({
+    confirmationCode: req.params.confirmationCode,
+  }).then((user) => {
+    if (!user) {
+      return res.status(404).send({ message: 'User not found.'})
+    }
+
+    user.status = 'Active'
+    user.save((err) => {
+      if (err) {
+        return res.status(500).send({ message: err })
+      }
+    })
+  }).catch((e) => console.log('error', e))
+})
+
+
+
+
+
+
 
 const getTokenFrom = req => {
   const authorization = req.get('authorization')
