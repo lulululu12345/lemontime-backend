@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
-const sendConfirmationEmail = require ('../utils/nodemailer.config.js')
+const sendConfirmationEmail = require ('../utils/nodemailer.js')
 
 usersRouter.get('/', async (req, res) => {
   const users = await User
@@ -85,14 +85,13 @@ usersRouter.post('/', async (req, res) => {
 // }
 
 
-usersRouter.get('/confirm/:confirmationCode', (req, res, next) => {
+usersRouter.get('/:confirmationCode', (req, res, next) => {
   User.findOne({
     confirmationCode: req.params.confirmationCode,
   }).then((user) => {
     if (!user) {
       return res.status(404).send({ message: 'User not found.' })
     }
-
     user.status = 'Active'
     user.save((err) => {
       if (err) {
@@ -101,8 +100,6 @@ usersRouter.get('/confirm/:confirmationCode', (req, res, next) => {
     })
   }).catch((e) => console.log('error', e))
 })
-
-
 
 
 
