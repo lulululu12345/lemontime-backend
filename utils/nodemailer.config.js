@@ -1,21 +1,25 @@
 const nodemailer = require('nodemailer')
 const config = require('./config')
 
-const user = config.USER
-const pass = config.PASS
+const smtpEmail = config.SMTP_EMAIL
+const smtpPass = config.SMTP_PASS
 
-const transport = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
   service: 'gmail',
+  port: 587,
+  secure: false,
   auth: {
-    user: user,
-    pass: pass,
+    user: smtpEmail,
+    pass: smtpPass,
   }
 })
 
 sendConfirmationEmail = (email, confirmationCode) => {
+  console.log('config.SMTP_EMAIL', config.SMTP_EMAIL)
+  console.log('user', smtpEmail)
   console.log('Check')
-  transport.sendMail({
-    from: user,
+  transporter.sendMail({
+    from: smtpEmail,
     to: email,
     subject: "Lemontime Account Confirmation",
     html: 

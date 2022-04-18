@@ -2,6 +2,6 @@ post http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-  "email": "shoop@doop.loop",
-  "password": "poop"
+  "email": "lu.stein@me.com",
+  "password": "shutit"
 }

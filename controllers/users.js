@@ -26,36 +26,42 @@ usersRouter.post('/', async (req, res) => {
       error: 'email already in use'
     })
   }
-  // Create a user object to pass to the json sign method (to generate a json web token).
-  const userForToken = {
-    email: savedUser.email,
-    id: savedUser.id,
-  }
   // Generate a password hash to be stored in the database.
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
+
   // Generate a json web token to be used as a confirmationCode in the verification email.
-  const confirmationCode = jwt.sign(userForToken, process.env.SECRET)
-  // Create the user object to store in the database. Including the confirmation code for the verification email.
+  const confirmationCode = jwt.sign(email, process.env.SECRET)
+  
   const user = new User({
     email,
     passwordHash,
     confirmationCode
   })
+  
   // Save the user in the database.
   // const savedUser = await user.save()
-
+  
   const savedUser = await user.save((err) => {
     if (err) return res.status(500).send({ message: err })
   })
+  
+  // Create a user object to pass to the jwt sign method (to generate a json web token).
+  // const userForToken = {
+  //   email: savedUser.email,
+  //   id: savedUser.id,
+  // }
 
-  res.send({ message: 'An account verification link has been sent to your email!' })
+
+  // Create the user object to store in the database. Including the confirmation code for the verification email.
   
   sendConfirmationEmail(
-    user.email,
-    user.confirmationCode
+    email,
+    confirmationCode
   )
 
+  res.send({ message: 'A verification link has been sent to your email!' })
+    
   // res.status(200).send({ token, email: user.email })
 })
 
@@ -77,12 +83,14 @@ usersRouter.post('/', async (req, res) => {
 //     })
 //   }).catch((e) => console.log('error', e))
 // }
+
+
 usersRouter.get('/confirm/:confirmationCode', (req, res, next) => {
   User.findOne({
     confirmationCode: req.params.confirmationCode,
   }).then((user) => {
     if (!user) {
-      return res.status(404).send({ message: 'User not found.'})
+      return res.status(404).send({ message: 'User not found.' })
     }
 
     user.status = 'Active'
