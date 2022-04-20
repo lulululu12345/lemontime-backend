@@ -6,21 +6,22 @@ const usersRouter = require('./users')
 
 loginRouter.post('/', async (req, res) => {
   const { email, password } = req.body
-
+  console.log('request body', req.body)
   const user = await User.findOne({ email })
+  console.log('user from the database', user)
   const passwordCorrect = user === null
     ? false
     : await bcrypt.compare(password, user.passwordHash)
 
   if (!(user && passwordCorrect)) {
     return res.status(401).json({
-      error: 'invalid email or password'
+      error: 'Invalid email or password'
     })
   }
 
   if (user.status !== 'Active') {
-    return res.status(401).send({
-      message: 'Please Verify Your Email!',
+    return res.status(401).json({
+      error: 'Please verify your email'
     })
   }
 

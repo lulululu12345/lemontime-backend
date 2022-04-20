@@ -11,10 +11,6 @@ usersRouter.get('/', async (req, res) => {
   res.json(users)
 })
 
-
-
-
-
 // Route for user sign-up
 usersRouter.post('/', async (req, res) => {
   // Get the email and password from the request body.
@@ -23,7 +19,7 @@ usersRouter.post('/', async (req, res) => {
   const existingUser = await User.findOne({ email })
   if (existingUser) {
     return res.status(400).json({
-      error: 'email already in use'
+      error: 'Email already in use'
     })
   }
   // Generate a password hash to be stored in the database.
@@ -64,26 +60,6 @@ usersRouter.post('/', async (req, res) => {
     
   // res.status(200).send({ token, email: user.email })
 })
-
-
-// Probbly need to take another look at all this and figure out a better way to do the same thing
-// verifyUser = (req, res, next) => {
-//   User.findOne({
-//     confirmationCode: req.params.confirmationCode,
-//   }).then((user) => {
-//     if (!user) {
-//       return res.status(404).send({ message: 'User not found.'})
-//     }
-
-//     user.status = 'Active'
-//     user.save((err) => {
-//       if (err) {
-//         return res.status(500).send({ message: err })
-//       }
-//     })
-//   }).catch((e) => console.log('error', e))
-// }
-
 
 usersRouter.get('/:confirmationCode', (req, res, next) => {
   User.findOne({
