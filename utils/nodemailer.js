@@ -25,7 +25,7 @@ sendConfirmationEmail = (email, confirmationCode) => {
         <h1>Email Confirmation</h1>
         <h2>Hello!</h2>
         <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
-        <a href=http://localhost:3000/api/users/${confirmationCode}>Click here</a>
+        <a href=https://stark-everglades-16940.herokuapp.com/api/users/${confirmationCode}>Click here</a>
       </div>`
   }).catch(err => console.log(err))
 }
