@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
+const path = require('path')
 const sendConfirmationEmail = require ('../utils/nodemailer.js')
 
 usersRouter.get('/', async (req, res) => {
@@ -60,7 +61,7 @@ usersRouter.get('/:confirmationCode', (req, res, next) => {
         return res.status(500).send({ message: err })
       }
     })
-    
+
     res.sendFile(path.join(__dirname, 'build', 'index.html'))
 
   }).catch((e) => console.log('error', e))
