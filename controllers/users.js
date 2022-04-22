@@ -60,6 +60,9 @@ usersRouter.get('/:confirmationCode', (req, res, next) => {
         return res.status(500).send({ message: err })
       }
     })
+    
+    res.sendFile(path.join(__dirname, 'build', 'index.html'))
+
   }).catch((e) => console.log('error', e))
 })
 

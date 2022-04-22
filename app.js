@@ -23,6 +23,9 @@ mongoose.connect(config.MONGODB_URI)
 
 app.use(cors())
 app.use(express.static(path.join(__dirname, 'build')))
+// app.get('/*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'))
+// })
 app.use(express.json())
 app.use(middleware.requestLogger)
 
@@ -31,9 +34,6 @@ app.use('/api/users', usersRouter)
 app.use('/api/tasktemplates', taskTemplatesRouter)
 app.use('/api/tasks', tasksRouter)
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'))
-})
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
