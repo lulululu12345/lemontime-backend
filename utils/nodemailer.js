@@ -14,6 +14,8 @@ const transporter = nodemailer.createTransport({
   }
 })
 
+{/* <a href=http://localhost:3000/api/users/${confirmationCode}>Click here</a> */}
+
 sendConfirmationEmail = (email, confirmationCode) => {
   console.log('Check')
   transporter.sendMail({

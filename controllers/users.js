@@ -35,30 +35,16 @@ usersRouter.post('/', async (req, res) => {
     confirmationCode
   })
   
-  // Save the user in the database.
-  // const savedUser = await user.save()
-  
   const savedUser = await user.save((err) => {
     if (err) return res.status(500).send({ message: err })
   })
-  
-  // Create a user object to pass to the jwt sign method (to generate a json web token).
-  // const userForToken = {
-  //   email: savedUser.email,
-  //   id: savedUser.id,
-  // }
 
-
-  // Create the user object to store in the database. Including the confirmation code for the verification email.
-  
   sendConfirmationEmail(
     email,
     confirmationCode
   )
 
-  res.send({ message: 'A verification link has been sent to your email!' })
-    
-  // res.status(200).send({ token, email: user.email })
+  res.status(200).send({ message: 'A verification link has been sent to your email!' })
 })
 
 usersRouter.get('/:confirmationCode', (req, res, next) => {
