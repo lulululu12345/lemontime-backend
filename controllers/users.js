@@ -62,13 +62,14 @@ usersRouter.get('/:confirmationCode', (req, res, next) => {
       }
     })
 
-    res.sendFile(path.join(__dirname, 'build', 'index.html'))
+    res.sendFile(path.join(__dirname, '..', 'build', 'index.html'))
 
   }).catch((e) => console.log('error', e))
 })
 
 
-
+// console.log(__dirname)      // "/Users/Sam/dirname-example/src/api"
+// console.log(process.cwd())  // "/Users/Sam/dirname-example"
 
 
 const getTokenFrom = req => {
