@@ -17,6 +17,7 @@ taskTemplatesRouter.get('/', async (req, res) => {
   if (!decodedToken.id) {
     return res.status(401).json({ error: 'token missing or invalid' })
   }
+  
   const user = await User.findById(decodedToken.id).populate('taskTemplates')
   const taskTemplates = user.taskTemplates
   res.json(taskTemplates)

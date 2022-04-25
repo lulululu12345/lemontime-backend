@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 const path = require('path')
-const sendConfirmationEmail = require ('../utils/nodemailer.js')
+const NodeMailer = require('../utils/nodemailer.js')
 
 usersRouter.get('/', async (req, res) => {
   const users = await User
@@ -40,7 +40,7 @@ usersRouter.post('/', async (req, res) => {
     if (err) return res.status(500).send({ message: err })
   })
 
-  sendConfirmationEmail(
+  NodeMailer.sendConfirmationEmail(
     email,
     confirmationCode
   )
