@@ -36,8 +36,10 @@ const getTokenFrom = req => {
 }
 
 accountsRouter.put('/:resetToken', async (req, res) => {
+  console.log('here is the request: ', req)
   // Get token from the request using the getTokenFrom function
-  const token = getTokenFrom(req)
+  // const token = getTokenFrom(req)
+  const token = req.params.resetToken
   // Use the jwt.verify method to decode the token
   const decodedToken = jwt.verify(token, process.env.SECRET)
   // Print to the console
