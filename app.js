@@ -29,6 +29,10 @@ app.get('/confirm/:confirmationCode', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
+app.get('/password-reset/:resetToken', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
+})
+
 app.use(express.json())
 app.use(middleware.requestLogger)
 
