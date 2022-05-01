@@ -60,6 +60,13 @@ accountsRouter.put('/:resetToken', async (req, res) => {
     }
   })
 
+  // res
+  //   .status(204)
+  //   .sendFile(path.join(__dirname, '..', 'build', 'index.html'))
+  //   .json({
+  //       message: 'You have successfully reset your password'
+  //   })
+
   res.status(204).json({
     message: 'You have successfully reset your password'
   })

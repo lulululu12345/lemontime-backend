@@ -14,7 +14,11 @@ const transporter = nodemailer.createTransport({
   }
 })
 
-{/* <a href=http://localhost:3000/api/users/${confirmationCode}>Click here</a> */}
+{/* <a href=http://localhost:3000/confirm/${confirmationCode}>Click here</a> */}
+{/* <a href=https://stark-everglades-16940.herokuapp.com/confirm/${confirmationCode}>Click here</a> */}
+
+{/* <a href=http://localhost:3000/password-reset/${resetToken}>Reset password</a> */}
+{/* <a href=https://stark-everglades-16940.herokuapp.com/password-reset/${resetToken}>Reset password</a> */}
 
 sendConfirmationEmail = (email, confirmationCode) => {
   transporter.sendMail({
@@ -24,7 +28,7 @@ sendConfirmationEmail = (email, confirmationCode) => {
     html: 
       `<div>
         <p>To verify your email follow the link below:</p>
-        <a href=https://stark-everglades-16940.herokuapp.com/api/users/${confirmationCode}>Click here</a>
+        <a href=https://stark-everglades-16940.herokuapp.com/confirm/${confirmationCode}>Click here</a>
       </div>`
   }).catch(err => console.log(err))
 }
@@ -37,7 +41,7 @@ sendPasswordResetEmail = (email, resetToken) => {
     html:
       `<div>
         <p>To reset your password follow the link below:</p>
-        <a href=http://localhost:3000/password-reset/${resetToken}>Reset password</a>
+        <a href=https://stark-everglades-16940.herokuapp.com/password-reset/${resetToken}>Reset password</a>
       </div>`
   }).catch(err => console.log(err))
 }
