@@ -45,7 +45,7 @@ usersRouter.post('/', async (req, res) => {
   //   confirmationCode
   // )
 
-  res.status(200).send({ email: email, confirmationCode: confirmationCode })
+  res.status(200).send({ email, confirmationCode })
 })
 
 

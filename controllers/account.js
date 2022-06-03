@@ -17,14 +17,12 @@ accountsRouter.put('/', async (req, res) => {
 
   const resetToken = jwt.sign({ email }, process.env.SECRET)
 
-  NodeMailer.sendPasswordResetEmail(
-    email,
-    resetToken
-  )
+  // NodeMailer.sendPasswordResetEmail(
+  //   email,
+  //   resetToken
+  // )
 
-  res.status(202).json({
-    message: 'Check your inbox for a link to reset your password'
-  })
+  res.status(202).send({ email, resetToken })
 })
 
 const getTokenFrom = req => {
