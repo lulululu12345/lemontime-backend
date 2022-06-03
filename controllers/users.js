@@ -40,13 +40,18 @@ usersRouter.post('/', async (req, res) => {
     if (err) return res.status(500).send({ message: err })
   })
 
-  NodeMailer.sendConfirmationEmail(
-    email,
-    confirmationCode
-  )
+  // NodeMailer.sendConfirmationEmail(
+  //   email,
+  //   confirmationCode
+  // )
 
-  res.status(200).send({ message: 'A verification link has been sent to your email!' })
+  res.status(200).send({ email: email, confirmationCode: confirmationCode })
 })
+
+
+
+
+
 
 usersRouter.get('/:confirmationCode', (req, res, next) => {
   User.findOne({
