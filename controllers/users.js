@@ -40,11 +40,6 @@ usersRouter.post('/', async (req, res) => {
     if (err) return res.status(500).send({ message: err })
   })
 
-  // NodeMailer.sendConfirmationEmail(
-  //   email,
-  //   confirmationCode
-  // )
-
   res.status(200).send({ email, confirmationCode })
 })
 
@@ -68,13 +63,9 @@ usersRouter.get('/:confirmationCode', (req, res, next) => {
     })
 
     res.status(200)
-    // res.sendFile(path.join(__dirname, '..', 'build', 'index.html'))
 
   }).catch((e) => console.log('error', e))
 })
-
-// console.log(__dirname)      // "/Users/Sam/dirname-example/src/api"
-// console.log(process.cwd())  // "/Users/Sam/dirname-example"
 
 const getTokenFrom = req => {
   const authorization = req.get('authorization')
