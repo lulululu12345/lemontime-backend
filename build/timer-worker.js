@@ -1,9 +1,8 @@
 let timer = null;
 
 onmessage = (e) => {
-
   const result = e.data
-  console.log('main thread -> worker: ', result)
+  
   if (result === 'start-timer') {
     timer = setInterval(() => {
       postMessage('tick')
