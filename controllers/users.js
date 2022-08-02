@@ -43,11 +43,6 @@ usersRouter.post('/', async (req, res) => {
   res.status(200).send({ email, confirmationCode })
 })
 
-
-
-
-
-
 usersRouter.get('/:confirmationCode', (req, res, next) => {
   User.findOne({
     confirmationCode: req.params.confirmationCode,

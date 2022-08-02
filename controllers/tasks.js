@@ -4,6 +4,14 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const usersRouter = require('./users')
 
+const getTokenFrom = req => {
+  const authorization = req.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  return null
+}
+
 // Get the entire tasks array
 tasksRouter.get('/', async (req, res) => {
   const tasks = await Task.find({}).populate('user', { email: 1 })
@@ -22,14 +30,6 @@ tasksRouter.get('/:id', (req, res, next) => {
     })
     .catch(error => next(error))
 })
-
-const getTokenFrom = req => {
-  const authorization = req.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
 
 // Create a new task
 tasksRouter.post('/', async (req, res, next) => {

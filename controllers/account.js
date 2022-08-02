@@ -2,7 +2,14 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const accountsRouter = require('express').Router()
 const User = require('../models/user')
-const NodeMailer = require('../utils/nodemailer')
+
+const getTokenFrom = req => {
+  const authorization = req.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  return null
+}
 
 accountsRouter.put('/', async (req, res) => {
   const email = req.body.email
@@ -17,21 +24,8 @@ accountsRouter.put('/', async (req, res) => {
 
   const resetToken = jwt.sign({ email }, process.env.SECRET)
 
-  // NodeMailer.sendPasswordResetEmail(
-  //   email,
-  //   resetToken
-  // )
-
   res.status(202).send({ email, resetToken })
 })
-
-const getTokenFrom = req => {
-  const authorization = req.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
 
 accountsRouter.put('/:resetToken', async (req, res) => {
   console.log('here is the request: ', req)
