@@ -20,17 +20,12 @@ accountsRouter.put('/', async (req, res) => {
 })
 
 accountsRouter.put('/:resetToken', async (req, res) => {
-  console.log('here is the request: ', req)
-  // Get token from the request using the getTokenFrom function
-  // const token = getTokenFrom(req)
+  // Get token from the URL
   const token = req.params.resetToken
   // Use the jwt.verify method to decode the token
   const decodedToken = jwt.verify(token, process.env.SECRET)
-  // Print to the console
-  console.log('decodedToken.email is: ', decodedToken.email)
   // Check the database for an email matching the decoded token email
   const user = await User.findOne({ email: decodedToken.email })
-
   // Get the new user password from the request
   const password = req.body.password
   // Generate a new passwordHash using bcrypt.hash
