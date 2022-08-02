@@ -3,14 +3,6 @@ const bcrypt = require('bcrypt')
 const accountsRouter = require('express').Router()
 const User = require('../models/user')
 
-const getTokenFrom = req => {
-  const authorization = req.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
-
 accountsRouter.put('/', async (req, res) => {
   const email = req.body.email
 
@@ -51,13 +43,6 @@ accountsRouter.put('/:resetToken', async (req, res) => {
       return res.status(500).send({ message: err })
     }
   })
-
-  // res
-  //   .status(204)
-  //   .sendFile(path.join(__dirname, '..', 'build', 'index.html'))
-  //   .json({
-  //       message: 'You have successfully reset your password'
-  //   })
 
   res.status(204).json({
     message: 'You have successfully reset your password'
